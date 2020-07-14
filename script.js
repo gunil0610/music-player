@@ -29,13 +29,12 @@ function loadSong(song) {
 }
 
 // Play song
-function playSong(e) {
+function playSong() {
   musicContainer.classList.add("play");
   playBtn.querySelector("i.fas").classList.remove("fa-play");
   playBtn.querySelector("i.fas").classList.add("fa-pause");
 
   audio.play();
-  updateVolume(e);
 }
 
 // Pause song
@@ -103,13 +102,13 @@ function setVolume(e) {
 }
 
 // Event listeners
-playBtn.addEventListener("click", (e) => {
+playBtn.addEventListener("click", () => {
   const isPlaying = musicContainer.classList.contains("play");
 
   if (isPlaying) {
     pauseSong();
   } else {
-    playSong(e);
+    playSong();
   }
 });
 
