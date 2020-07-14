@@ -8,7 +8,9 @@ const musicContainer = document.getElementById("music-container"),
   progress = document.getElementById("progress"),
   progressContainer = document.getElementById("progress-container"),
   title = document.getElementById("title"),
-  cover = document.getElementById("cover");
+  cover = document.getElementById("cover"),
+  volumeContainer = document.getElementById("volume-container");
+const volumeBar = document.getElementById("volume");
 
 // Song titles
 const songs = ["hey", "summer", "ukulele"];
@@ -27,12 +29,13 @@ function loadSong(song) {
 }
 
 // Play song
-function playSong() {
+function playSong(e) {
   musicContainer.classList.add("play");
   playBtn.querySelector("i.fas").classList.remove("fa-play");
   playBtn.querySelector("i.fas").classList.add("fa-pause");
 
   audio.play();
+  updateVolume(e);
 }
 
 // Pause song
@@ -84,14 +87,29 @@ function setProgress(e) {
   audio.currentTime = (clickX / width) * duration;
 }
 
+// Update volume
+function updateVolume(e) {
+  const { volume } = e.srcElement;
+  const volumePercent = volume * 100;
+  volumeBar.style.width = `${volumePercent}%`;
+}
+
+// Set volumne
+function setVolume(e) {
+  const width = this.clientWidth;
+  const clickX = e.offsetX;
+
+  audio.volume = clickX / width;
+}
+
 // Event listeners
-playBtn.addEventListener("click", () => {
+playBtn.addEventListener("click", (e) => {
   const isPlaying = musicContainer.classList.contains("play");
 
   if (isPlaying) {
     pauseSong();
   } else {
-    playSong();
+    playSong(e);
   }
 });
 
@@ -107,3 +125,7 @@ progressContainer.addEventListener("click", setProgress);
 
 // Song ends
 audio.addEventListener("ended", nextSong);
+
+// Volume
+audio.addEventListener("volumechange", updateVolume);
+volumeContainer.addEventListener("click", setVolume);
